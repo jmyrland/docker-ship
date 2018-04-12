@@ -1,0 +1,19 @@
+{
+  "name": "cli-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.3.2",
+    "docker-cli-js": "^2.2.0",
+    "inquirer": "^5.2.0",
+    "ora": "^2.0.0",
+    "semver": "^5.5.0"
+  }
+}
