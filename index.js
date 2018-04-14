@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('pretty-error').start();
 
 const ora = require('ora');
 const inquirer = require('inquirer');
