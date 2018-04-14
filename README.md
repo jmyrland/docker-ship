@@ -7,7 +7,7 @@ Build, tag and push docker images in one command.
 
 Installation:
 
-    npm i -g docker-ship
+    npm i -g docker-ship-cli
 
 Usage:
 
