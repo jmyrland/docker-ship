@@ -25,8 +25,9 @@ Usage:
       imageName    docker image name (prompted if missing)                  [string]
 
     Options:
-      --version  Show version number                                       [boolean]
-      --help     Show help                                                 [boolean]
+      --update-pkg, -u  Update the version in package.json                 [boolean]
+      --version         Show version number                                [boolean]
+      --help            Show help                                          [boolean]
 
 
 Executing `docker-ship` with the same parameters, with only the `nextVersion` changing can be tedious. You can add default values to a `package.json` file to avoid this.

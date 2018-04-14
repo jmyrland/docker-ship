@@ -15,7 +15,19 @@ const printError = (errorMessage, helpText) => {
   console.log(chalk.bold(`  ${helpText}`));
 }
 
-const main = async (args) => {
+const updatePkgVersion = async (version) => {
+  const util = require('util');
+  const exec = util.promisify(require('child_process').exec);
+
+  const cmd = `npm version ${version}`;
+  const { stdout, stderr } = await exec(cmd);
+
+  if (stderr) {
+    throw new Error(stderr)
+  }
+}
+
+const main = async () => {
   // Ensure that docker is installed
   if (!await isDockerInstalled()) {
     printError('Docker is not installed', 'verify installation by running `which docker`');
@@ -27,7 +39,8 @@ const main = async (args) => {
   }
 
   // Ensure values for image and version
-  const { imageName, nextVersion } = await collectInput(args);
+  const input = await collectInput();
+  const { imageName, nextVersion } = input;
 
   // Setup process dependencies for process..
   const spinner = ora();
@@ -41,7 +54,18 @@ const main = async (args) => {
   deploy.on('push', (imageName, version) => spinner.start(`Pushing ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
   deploy.on('push-completed', (imageName, version) => spinner.succeed(`Pushed ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
 
-  deploy.on('completed', () => {
+  deploy.on('completed', async () => {
+    if (input.shouldUpdatePkgVersion) {
+      try {
+        spinner.start('Updating version in package.json');
+        await updatePkgVersion(nextVersion);
+        spinner.succeed('Updated version in package.json');
+      } catch(err) {
+        spinner.fail();
+        console.error(err);
+      }
+    }
+
     spinner.start(chalk.green.bold(`Deploy completed.`)).succeed();
     process.exit(0);
   })
