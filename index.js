@@ -9,16 +9,19 @@ const collectInput = require('./lib/collectInput.js');
 const Deploy = require('./lib/deploy.js');
 const { isDockerInstalled, isDockerfilePresent } = require('./lib/docker.js');
 
+const printError = (errorMessage, helpText) => {
+  console.log(chalk.red('! ') + chalk.red.bold.underline(errorMessage));
+  console.log(chalk.bold(`  ${helpText}`));
+}
+
 const main = async (args) => {
   // Ensure that docker is installed
   if (!await isDockerInstalled()) {
-    console.log(chalk.red('! ') + chalk.red.bold.underline('Docker is not installed'));
-    console.log(chalk.bold('  verify installation by running `which docker`'));
+    printError('Docker is not installed', 'verify installation by running `which docker`');
     process.exit(0);
   }
   if (!await isDockerfilePresent()) {
-    console.log(chalk.red('! ') + chalk.red.bold.underline('Dockerfile not located'));
-    console.log(chalk.bold(`  wrong dictionary? (${process.cwd()})`));
+    printError('Dockerfile not located', `wrong dictionary? (${process.cwd()})`);
     process.exit(0);
   }
 
