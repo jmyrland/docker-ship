@@ -7,13 +7,18 @@ const chalk = require('chalk');
 const collectInput = require('./lib/collectInput.js');
 
 const Deploy = require('./lib/deploy.js');
-const { isDockerInstalled } = require('./lib/docker.js');
+const { isDockerInstalled, isDockerfilePresent } = require('./lib/docker.js');
 
 const main = async (args) => {
   // Ensure that docker is installed
   if (!await isDockerInstalled()) {
     console.log(chalk.red('! ') + chalk.red.bold.underline('Docker is not installed'));
     console.log(chalk.bold('  verify installation by running `which docker`'));
+    process.exit(0);
+  }
+  if (!await isDockerfilePresent()) {
+    console.log(chalk.red('! ') + chalk.red.bold.underline('Dockerfile not located'));
+    console.log(chalk.bold(`  wrong dictionary? (${process.cwd()})`));
     process.exit(0);
   }
 
