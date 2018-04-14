@@ -9,6 +9,15 @@
   },
   "author": "Jørn Myrland <j@myrland.nu>",
   "license": "MIT",
+  "keywords": [
+    "docker",
+    "deploy",
+    "push",
+    "build",
+    "tag",
+    "ship",
+    "cli"
+  ],
   "repository": {
     "type" : "git",
     "url" : "https://github.com/jmyrland/docker-ship"
