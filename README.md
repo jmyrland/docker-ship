@@ -5,6 +5,13 @@ Build, tag and push docker images in one command.
 
 ![Example usage of docker-ship](./docker-ship.gif)
 
+The example above is equal to running the following docker-commands:
+
+    $ docker build -t jmyrland/test .
+    $ docker tag 9392f4f2e09c jmyrland/test:1.0.0
+    $ docker push jmyrland/test:1.0.0
+    $ docker push jmyrland/test:latest
+
 Installation:
 
     npm i -g docker-ship-cli
