@@ -1,19 +1,27 @@
 {
-  "name": "cli-test",
+  "name": "docker-ship",
   "version": "1.0.0",
-  "description": "",
+  "description": "Build, tag and push docker images in one command.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cd ./test && ship"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jørn Myrland <j@myrland.nu>",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jmyrland/docker-ship"
+  },
   "dependencies": {
     "chalk": "^2.3.2",
-    "docker-cli-js": "^2.2.0",
+    "file-exists": "^5.0.1",
     "inquirer": "^5.2.0",
     "ora": "^2.0.0",
-    "semver": "^5.5.0"
+    "semver": "^5.5.0",
+    "yargs": "^11.0.0"
+  },
+  "bin": {
+    "docker-ship": "./index.js"
   }
 }

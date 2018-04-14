@@ -1,93 +1,48 @@
+#!/usr/bin/env node
+
 const ora = require('ora');
 const inquirer = require('inquirer');
 const semver = require('semver');
 const chalk = require('chalk');
-const Docker = require('docker-cli-js').Docker;
+const collectInput = require('./lib/collectInput.js');
 
 const Deploy = require('./lib/deploy.js');
+const { isDockerInstalled } = require('./lib/docker.js');
 
-const package = require('./package.json');
-const currentVersion = package.version;
-// const imageName = package.imageName;
-
-const questions = [{
-  type: 'input',
-  name: 'version',
-  message: `What\'s the next version${currentVersion ? ` (current ${currentVersion})` : ''}`,
-  validate: function(value) {
-    if (!semver.valid(value)) {
-      return 'Version must match the format MAJOR.MINOR.PATCH, i.e. "1.2.3".';
-    }
-    if (currentVersion && semver.lt(value, currentVersion)) {
-      return `Version must be greater than the current version (${currentVersion}).`;
-    }
-    return true;
+const main = async (args) => {
+  // Ensure that docker is installed
+  if (!await isDockerInstalled()) {
+    console.log(chalk.red('! ') + chalk.red.bold.underline('Docker is not installed'));
+    console.log(chalk.bold('  verify installation by running `which docker`'));
+    process.exit(0);
   }
-}];
 
-// inquirer
-//   .prompt(questions)
-//   .then(answers => {
-    const answers = { version: '1.2.3' }
-    const imageName = `testimage`; // todo
-    const nextVersion = semver.clean(answers.version);
-  
-    const spinner = ora();
+  // Ensure values for image and version
+  const { imageName, nextVersion } = await collectInput(args);
 
-    const deploy = new Deploy(imageName, nextVersion);
+  // Setup process dependencies for process..
+  const spinner = ora();
 
-    deploy.on('build', (imageName) => spinner.start(`Building image ${chalk.magenta.bold(imageName)}`))
-    deploy.on('build-completed', () => spinner.succeed())
-    deploy.on('tag', (imageName, version) => spinner.start(`Tagging ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
-    deploy.on('tag-completed', () => spinner.succeed())
-    deploy.on('push', (imageName, version) => spinner.start(`Pushing ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
-    deploy.on('push-completed', () => spinner.succeed())
-    deploy.on('completed', () => spinner.start(chalk.green.bold(`Deploy completed.`)).succeed())
+  // Initiate deployment
+  const deploy = new Deploy(imageName, nextVersion);
+  deploy.on('build', (imageName) => spinner.start(`Building ${chalk.magenta.bold(imageName)}`))
+  deploy.on('build-completed', (imageName, containerId) => spinner.succeed(`Built ${chalk.magenta.bold(imageName)} (${chalk.yellow(containerId)})`))
+  deploy.on('tag', (imageName, version) => spinner.start(`Tagging ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
+  deploy.on('tag-completed', (imageName, version) => spinner.succeed(`Tagged ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
+  deploy.on('push', (imageName, version) => spinner.start(`Pushing ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
+  deploy.on('push-completed', (imageName, version) => spinner.succeed(`Pushed ${chalk.magenta.bold(imageName)}:${chalk.green.bold(version)}`))
 
-    deploy.on('error', (err) => {
-      spinner.fail();
-      console.error(err);
-    })
+  deploy.on('completed', () => {
+    spinner.start(chalk.green.bold(`Deploy completed.`)).succeed();
+    process.exit(0);
+  })
 
-    // deploy.start();
+  deploy.on('error', (err) => {
+    spinner.fail();
+    console.error(err);
+    process.exit(1);
+  })
 
-  //   // buildSpinner.start();
+}
 
-  //   // const docker = new Docker();
-  //   // Promise.resolve()
-  //   //   // .then(() => { throw new Error(`Failed to build image.`) })
-  //   //   .then(() => docker.command(`build -t ${imageName} .`))
-  //   //   .then(result => {
-  //   //     if (!result.success) {
-  //   //       throw new Error(`Failed to build image.`)
-  //   //     }
-  //   //     return result.containerId;
-  //   //   })
-  //   //   .then(containerId => {
-        
-  //   //   })
-  //   //   .catch(err => {
-  //   //     buildSpinner.fail(err.message);
-  //   //     console.log(err);
-  //   //   });
-
-  //   // setTimeout(() => {
-  //   //   buildSpinner.succeed()
-
-  //   //   tagSpinner.start();
-  //   //   setTimeout(() => {
-  //   //     tagSpinner.succeed()
-
-  //   //     pushSpinner.start();
-  //   //     setTimeout(() => {
-  //   //       pushSpinner.succeed()
-  //   //     }, 1000);
-
-  //   //   }, 1000);
-  //   // }, 1000);
-
-    
-  // })
-
-
-
+main();
