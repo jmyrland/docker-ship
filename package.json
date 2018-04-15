@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "cd ./test && ../index.js"
+    "test": "cd ./test && ../index.js && npm version 1.0.0"
   },
   "author": "Jørn Myrland <j@myrland.nu>",
   "license": "MIT",
