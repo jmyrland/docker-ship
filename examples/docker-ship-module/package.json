@@ -1,0 +1,12 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "dockerRepository": "jmyrland/test",
+  "dockerShipModule": "./docker-ship-module.js",
+  "devDependencies": {
+    "docker-ship-cli": "../../"
+  },
+  "scripts": {
+    "deploy":  "docker-ship"
+  }
+}
