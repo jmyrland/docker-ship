@@ -4,7 +4,7 @@
 Build, tag and push docker images in one command.
 
 <p align="center">
-	<img src="https://rawgit.com/jmyrland/docker-ship/master/docker-ship.svg" width="500">
+	<img src="https://rawgit.com/jmyrland/docker-ship/master/docker-ship.svg" width="100%">
 </p>
 
 The example above is equal to running the following docker-commands:
