@@ -3,14 +3,17 @@
 
 Build, tag and push docker images in one command.
 
-![Example usage of docker-ship](./docker-ship.svg)
+<p align="center">
+	<img src="https://rawgit.com/jmyrland/docker-ship/master/docker-ship.svg" width="500">
+</p>
 
 The example above is equal to running the following docker-commands:
-
-    $ docker build -t jmyrland/test .
-    $ docker tag 9392f4f2e09c jmyrland/test:1.0.0
-    $ docker push jmyrland/test:1.0.0
-    $ docker push jmyrland/test:latest
+```
+$ docker build -t jmyrland/test .
+$ docker tag 9392f4f2e09c jmyrland/test:1.0.0
+$ docker push jmyrland/test:1.0.0
+$ docker push jmyrland/test:latest
+```
 
 ## Installation:
 
