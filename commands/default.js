@@ -33,6 +33,13 @@ const command = async (args) => {
   // Setup process dependencies for process..
   const spinner = ora();
 
+  // Get handlers from external module
+  const { handlePreBuild, handlePostPush } = args.shipModule;
+  const ctx = { spinner, inquirer };
+
+  // Execute pre build action
+  await handlePreBuild(ctx, input);
+
   // Initiate deployment
   const deploy = new Deploy(imageName, nextVersion);
   deploy.on('build', (imageName) => spinner.start(`Building ${chalk.magenta.bold(imageName)}`))
@@ -53,6 +60,9 @@ const command = async (args) => {
         console.error(err);
       }
     }
+
+    // Execute post push action
+    await handlePostPush(ctx, input);
 
     spinner.start(chalk.green.bold(`Deploy completed.`)).succeed();
     process.exit(0);
