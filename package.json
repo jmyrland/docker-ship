@@ -1,6 +1,6 @@
 {
   "name": "docker-ship-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Build, tag and push docker images in one command.",
   "main": "index.js",
   "scripts": {
