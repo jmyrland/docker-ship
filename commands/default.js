@@ -40,9 +40,6 @@ const command = async (args) => {
   // Execute pre build action
   await handlePreBuild(ctx, input);
 
-  // Execute post push action
-  await handlePostPush(ctx, input);
-  /*
   // Initiate deployment
   const deploy = new Deploy(imageName, nextVersion);
   deploy.on('build', (imageName) => spinner.start(`Building ${chalk.magenta.bold(imageName)}`))
@@ -64,6 +61,9 @@ const command = async (args) => {
       }
     }
 
+    // Execute post push action
+    await handlePostPush(ctx, input);
+
     spinner.start(chalk.green.bold(`Deploy completed.`)).succeed();
     process.exit(0);
   })
@@ -73,7 +73,6 @@ const command = async (args) => {
     console.error(err);
     process.exit(1);
   })
-  */
 }
 
 const inquireMissingParameters = async ({ pkgPath, updatePkg, nextVersion, currentVersion, imageName }) => {

@@ -7,6 +7,6 @@
     "docker-ship-cli": "../../"
   },
   "scripts": {
-    "deploy":  "docker-ship"
+    "deploy": "docker-ship"
   }
 }

@@ -5,6 +5,7 @@
   "dockerShipModule": "./docker-ship-module.js",
   "devDependencies": {
     "docker-ship-cli": "../../",
+    "dotenv": "^5.0.1",
     "ssh2-promise": "0.0.9"
   },
   "scripts": {

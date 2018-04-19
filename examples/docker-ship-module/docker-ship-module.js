@@ -23,20 +23,20 @@ module.exports = {
   },
 
   handlePostPush: async ({ inquirer, spinner }, args) => {
-      const questions = [
-        {
-          when: !state.impressedInitially,
-          type: 'confirm',
-          name: 'impressed',
-          default: true,
-          message: 'This action is ALSO initiated from an external source. Still not impressed?',
-        }
-      ];
-      const answers = await inquirer.prompt(questions);
+    const questions = [
+      {
+        when: !state.impressedInitially,
+        type: 'confirm',
+        name: 'impressed',
+        default: true,
+        message: 'This action is ALSO initiated from an external source. Still not impressed?',
+      }
+    ];
+    const answers = await inquirer.prompt(questions);
 
-      spinner.start("Doing some heavy lifting in docker-ship-module.js post push..");
-      await delay(1000);
-      spinner.succeed("Heavy lifting in docker-ship-module.js post push completed!");
+    spinner.start("Doing some heavy lifting in docker-ship-module.js post push..");
+    await delay(1000);
+    spinner.succeed("Heavy lifting in docker-ship-module.js post push completed!");
   }
 
 }
